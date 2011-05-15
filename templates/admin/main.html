@@ -2,7 +2,8 @@
     <table id=articles>
     <tr><th>Date</th><th>Title</th><th></th></tr>
     {% for article in articles %}
-        <tr><td>
+        {% if article.draft %}<tr class=draft>{% else %}<tr>{% endif %}
+        <td>
         {{ article.published_when|date:"j F, Y" }}
         </td><td>
         <a href="/admin/article/edit/?id={{ article.key.id }}">{{ article.title }}</a>

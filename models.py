@@ -3,12 +3,18 @@ import sys
 
 from google.appengine.ext import db
 
+import defs
+
+import markdown
+
+#I think that this isn't needed now
 #FETCH_THEM_ALL = ((sys.maxint - 1) >> 32) & 0xffffffff
-FETCH_THEM_ALL = sys.maxint
+#FETCH_THEM_ALL = sys.maxint - 1
 
 class Article(db.Model):
     title = db.StringProperty(required=True)
     body = db.TextProperty()
+    body_html = db.TextProperty()
     published_when = db.DateTimeProperty(auto_now_add=True)
 
     draft = db.BooleanProperty(required=True, default=False)
@@ -17,7 +23,7 @@ class Article(db.Model):
     def get_all(cls):
         q = db.Query(Article)
         q.order('-published_when')
-        return q.fetch(FETCH_THEM_ALL)
+        return q
     
     @classmethod
     def get(cls, id):
@@ -28,13 +34,16 @@ class Article(db.Model):
     @classmethod
     def published_query(cls):
         q = db.Query(Article)
-        q.filter('draft = ', False)
+        q.filter('draft = ', False)        
         return q
     
     @classmethod
     def published(cls):
-        return Article.published_query().order('-published_when').fetch(FETCH_THEM_ALL)
+        return Article.published_query().order('-published_when').fetch(defs.MAX_ARTICLES_PER_PAGE)
 
+    def _markdown(self, content):
+        md = markdown.Markdown()
+        return md.convert(content)
 
     def save(self):
         try:
@@ -50,6 +59,8 @@ class Article(db.Model):
         if draft and (not self.draft):
             # Going from draft to published. Update the timestamp.
             self.published_when = datetime.datetime.now()
+
+        self.body_html = self._markdown(self.body)
 
         self.put()
         """try:

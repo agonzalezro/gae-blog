@@ -17,8 +17,7 @@ class ShowArticlesHandler(request.BlogRequestHandler):
 
 class NewArticleHandler(request.BlogRequestHandler):
     def get(self):
-        self.response.out.write(self.render_template('admin/edit.html',
-                                {'article': Article(title='Your title here', body='And your body here!')}))
+        self.response.out.write(self.render_template('admin/edit.html', {}))
 
 class SaveArticleHandler(request.BlogRequestHandler):
     def post(self):
@@ -45,7 +44,7 @@ class SaveArticleHandler(request.BlogRequestHandler):
             article = Article(title=title, body=body, draft=draft)
         article.save()
 
-        self.redirect('/admin')
+        self.redirect('/admin/')
 
 
 class EditArticleHandler(request.BlogRequestHandler):

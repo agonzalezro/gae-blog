@@ -17,7 +17,7 @@ handlers:
 
 - url: /admin/.*
   script: admin.py
-  login: admin
+#  login: admin
 
 - url: /.*
   script: blog.py
