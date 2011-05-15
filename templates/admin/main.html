@@ -12,7 +12,9 @@
         </td></tr>
     {% endfor %}
     </table>
-{% else %}
+{% endif %}
+
+{% if not articles %}
     <h2 id=no-articles>No stuff to show, add one!</h2>
 {% endif %}
 

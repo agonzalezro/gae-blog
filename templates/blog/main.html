@@ -3,14 +3,12 @@
 <div class="article">
 <h2>{{ article.title }}</h2>
 <div class="article-body">
-{% if article.body_html %}
-    {{ article.body_html }}
-{% else %}
-    {{ article.body }}
-{% endif %}
+{{ article.body_html }}
 </div>
 </div>
 {% endfor %}
-{% else %}
+{% endif %}
+
+{% if not articles %}
 <h2>No stuff here!</h2>
 {% endif %}
