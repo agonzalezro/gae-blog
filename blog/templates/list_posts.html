@@ -4,9 +4,9 @@
 <ul>
     {% for post in posts %}
     <li>
-        {{ post.title }} (written by {{ post.author.nickname() }})
+        {{ post.title }}
 
-        {{ post.content }}
+        {{ post.content|markdown }}
     </li>
     {% endfor %}
 </ul>
