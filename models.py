@@ -7,4 +7,4 @@ class Post(db.Model):
     content = db.TextProperty(required = True)
 
     when = db.DateTimeProperty(auto_now_add = True)
-    draft = db.BooleanProperty(required=True, default=False)
+    #draft = db.BooleanProperty(required=True, default=False)
