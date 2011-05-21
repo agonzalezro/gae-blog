@@ -37,3 +37,12 @@ def edit_post():
         flash('Post saved on database.')
         return redirect(url_for('list_posts'))
     return render_template('edit_post.html', id=id, form=form, post=post)
+
+
+@app.route('/delete/<id>', methods = ['POST'])
+@login_required
+def delete_post(id):
+    id = int(id)
+    Post.get_by_id(id).delete()
+
+    return redirect(url_for('list_posts'))

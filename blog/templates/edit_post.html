@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 id="">Write a post</h1>
+    <form action="{{ url_for('edit_post') }}{% if id %}?id={{ id }}{% endif %}" method="post" accept-charset="utf-8" name="edit_form">
+        {{ form.csrf_token }}
+        <p>
+            <label for="title">{{ form.title.label }}</label>
+
+            <input type="text" id="title" name="title" value="{{ post.title|safe }}" />
+
+            {% if form.title.errors %}
+            <ul class="errors">
+                {% for error in form.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </p>
+        <p>
+            <label for="content">{{ form.content.label }}</label>
+
+            <textarea id="content" name="content">{{ post.content|safe }}</textarea>
+
+            {% if form.content.errors %}
+            <ul class="errors">
+                {% for error in form.content.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </p>
+        <p><input type="submit" value="Save post"/></p>
+        {% if id %}
+        <script>
+        function change_action_to_delete_and_submit(id) {
+            form = document.forms[0];
+            form.action="{{ url_for('delete_post', id=id) }}";
+            form.submit();
+        }
+        </script>
+        {% endif %}
+        {% if id %}<p><input type="button" onclick="return change_action_to_delete_and_submit()" value="Delete" /></p>{% endif %}
+    </form>
+{% endblock %}
